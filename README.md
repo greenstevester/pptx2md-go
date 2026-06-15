@@ -40,9 +40,12 @@ it's pure Go, a single static binary, built straight from the OOXML spec
 
 ```
 /plugin marketplace add greenstevester/pptx2md-go
+/plugin install pptx2md@pptx2md
 ```
-Restart Claude Code, then ask: *"What pptx skills do you have?"* The conversion
-binary is downloaded (and checksum-verified) for your platform on first use.
+Restart Claude Code, then ask: *"What pptx skills do you have?"* (Adding the
+marketplace only registers it — the second command installs the plugin.) The
+conversion binary is downloaded (and checksum-verified) for your platform on
+first use.
 
 ### As a standalone binary
 

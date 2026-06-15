@@ -36,9 +36,11 @@ the binary built by this repo.
 
 ```
 /plugin marketplace add greenstevester/pptx2md-go
+/plugin install pptx2md@pptx2md
 ```
 
-Restart Claude Code.
+Restart Claude Code. (The first command only registers the marketplace; the
+second installs the plugin.)
 
 **Verify:** ask Claude *"What pptx skills do you have?"*
 
