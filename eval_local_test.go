@@ -1,9 +1,14 @@
 package main
 
 import (
+	"archive/zip"
+	"bytes"
+	"encoding/xml"
+	"io"
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -53,6 +58,18 @@ func TestRealWorldEvals(t *testing.T) {
 				t.Fatal("no slides extracted")
 			}
 
+			// Independent oracle: re-derive expected slide numbers straight from
+			// the zip's sldIdLst + rels, NOT via Extract, then check extraction
+			// matched it. This anchors count/order to the file, not to itself.
+			wantNums := independentSlideNumbers(t, path)
+			gotNums := make([]int, len(deck.Slides))
+			for i, s := range deck.Slides {
+				gotNums[i] = s.Number
+			}
+			if !slices.Equal(wantNums, gotNums) {
+				t.Fatalf("slide numbers/order: file=%v extracted=%v", wantNums, gotNums)
+			}
+
 			// Rendered headings must match extracted slides one-for-one, carry each
 			// slide's number, and stay in strictly increasing presentation order.
 			heads := slideHeadRe.FindAllStringSubmatch(md, -1)
@@ -86,7 +103,69 @@ func TestRealWorldEvals(t *testing.T) {
 				}
 			}
 
-			t.Logf("OK: %d slides, %d bytes of Markdown", len(deck.Slides), len(md))
+			withBody := 0
+			for _, s := range deck.Slides {
+				if len(s.Blocks) > 0 {
+					withBody++
+				}
+			}
+			t.Logf("OK: %d slides (%d with body content, %.0f%%), %d bytes of Markdown",
+				len(deck.Slides), withBody, 100*float64(withBody)/float64(len(deck.Slides)), len(md))
 		})
 	}
+}
+
+// independentSlideNumbers re-derives the expected slide Numbers (1-based
+// sldIdLst positions of resolvable slide relationships whose part exists)
+// directly from the zip, bypassing Extract — an independent oracle for the
+// slide count and ordering that the extractor's own loop must reproduce.
+func independentSlideNumbers(t *testing.T, path string) []int {
+	t.Helper()
+	data, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	zr, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	present := make(map[string]bool, len(zr.File))
+	read := func(name string) []byte {
+		for _, f := range zr.File {
+			if f.Name == name {
+				rc, err := f.Open()
+				if err != nil {
+					t.Fatal(err)
+				}
+				defer func() { _ = rc.Close() }()
+				b, err := io.ReadAll(rc)
+				if err != nil {
+					t.Fatal(err)
+				}
+				return b
+			}
+		}
+		return nil
+	}
+	for _, f := range zr.File {
+		present[f.Name] = true
+	}
+
+	var pres presentationXML
+	if err := xml.Unmarshal(read("ppt/presentation.xml"), &pres); err != nil {
+		t.Fatal(err)
+	}
+	rels, err := parseRelationships(read("ppt/_rels/presentation.xml.rels"), "ppt")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var nums []int
+	for i, sid := range pres.SldIDLst {
+		rel, ok := rels[sid.RelID]
+		if ok && strings.Contains(rel.Type, "/slide") && present[rel.Target] {
+			nums = append(nums, i+1)
+		}
+	}
+	return nums
 }
