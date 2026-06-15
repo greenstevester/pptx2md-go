@@ -14,7 +14,7 @@ Module name: `pptx-to-agent-md` | Go 1.24+ (CI runs 1.26.1) | Single `main` pack
 
 ```bash
 make build                       # Build for current platform -> build/pptx-to-md
-make build-all                   # Cross-compile all 5 targets -> build/
+make build-all                   # Cross-compile all 6 targets -> build/
 make test                        # Run all tests with -race
 make lint                        # golangci-lint
 make ci                          # Full CI pipeline locally
