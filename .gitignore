@@ -9,3 +9,6 @@ coverage.html
 
 # Local-only real-world eval decks (never committed — may contain licensed/personal content)
 testdata/local/
+
+# Internal design/plan docs — kept local, not published
+docs/
