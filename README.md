@@ -10,10 +10,10 @@ Every `.pptx`-to-Markdown converter I could find was Python-based. Rather than d
 
 The `.pptx` format is *fully* specified — the catch is that the spec is enormous. It's part of the **Office Open XML (OOXML)** standard that also defines Word and Excel. Canonical references:
 
-- **ECMA-376** — the Office Open XML standard ([ecma-international.org](https://ecma-international.org/publications-and-standards/standards/ecma-376/))
-- **ISO/IEC 29500** — the ISO ratification of the same standard
-- **Open XML SDK** documentation
-- Microsoft also publishes the **XML schemas (`.xsd`) for all of OOXML**
+- **ECMA-376** — the Office Open XML standard, with the `.xsd` schemas bundled as electronic inserts ([ecma-international.org](https://ecma-international.org/publications-and-standards/standards/ecma-376/))
+- **ISO/IEC 29500** — the ISO/IEC ratification of the same standard ([iso.org catalogue](https://www.iso.org/standard/71691.html); the current edition is free via [ISO ITTF](https://standards.iso.org/ittf/PubliclyAvailableStandards/))
+- **Open XML SDK** documentation ([learn.microsoft.com](https://learn.microsoft.com/en-us/office/open-xml/open-xml-sdk))
+- The complete **XML schemas (`.xsd`)** for OOXML ship as normative inserts to the standard (and with the Open XML SDK); a browsable copy lives at [schemas.liquid-technologies.com](https://schemas.liquid-technologies.com/officeopenxml/2006/)
 
 ECMA-376 alone runs to several thousand pages across four parts: (1) fundamentals & packaging, (2) Open Packaging Conventions — the ZIP container, (3) markup language reference, and (4) transitional migration features.
 
