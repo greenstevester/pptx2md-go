@@ -135,13 +135,23 @@ func Extract(r io.ReaderAt, size int64) (Deck, error) {
 		defer func() { _ = rc.Close() }()
 		return io.ReadAll(rc)
 	}
-
-	presData, err := read("ppt/presentation.xml")
-	if err != nil {
-		return Deck{}, err
+	// decode streams a part straight through the XML decoder, avoiding a
+	// full-size []byte copy per part — the dominant allocation on large decks.
+	decode := func(name string, v any) error {
+		f, ok := files[name]
+		if !ok {
+			return fmt.Errorf("missing %s", name)
+		}
+		rc, err := f.Open()
+		if err != nil {
+			return err
+		}
+		defer func() { _ = rc.Close() }()
+		return xml.NewDecoder(rc).Decode(v)
 	}
+
 	var pres presentationXML
-	if err := xml.Unmarshal(presData, &pres); err != nil {
+	if err := decode("ppt/presentation.xml", &pres); err != nil {
 		return Deck{}, err
 	}
 	if len(pres.SldIDLst) == 0 {
@@ -163,7 +173,7 @@ func Extract(r io.ReaderAt, size int64) (Deck, error) {
 		if !ok || !strings.Contains(rel.Type, "/slide") {
 			continue
 		}
-		slide, err := extractSlide(read, rel.Target, i+1)
+		slide, err := extractSlide(decode, read, rel.Target, i+1)
 		if err != nil {
 			return Deck{}, err
 		}
@@ -190,18 +200,15 @@ func deckTitle(read func(string) ([]byte, error)) string {
 	return strings.TrimSpace(core.Title)
 }
 
-func extractSlide(read func(string) ([]byte, error), slidePath string, num int) (Slide, error) {
-	data, err := read(slidePath)
-	if err != nil {
-		return Slide{}, err
-	}
+func extractSlide(decode func(string, any) error, read func(string) ([]byte, error), slidePath string, num int) (Slide, error) {
 	var sx slideXML
-	if err := xml.Unmarshal(data, &sx); err != nil {
+	if err := decode(slidePath, &sx); err != nil {
 		return Slide{}, err
 	}
 
 	rels := map[string]relationship{}
 	if relsData, rErr := read(relsPathFor(slidePath)); rErr == nil {
+		var err error
 		rels, err = parseRelationships(relsData, path.Dir(slidePath))
 		if err != nil {
 			return Slide{}, err
@@ -231,8 +238,9 @@ func extractSlide(read func(string) ([]byte, error), slidePath string, num int) 
 		}
 	}
 	if noteRel := findRelByType(rels, relTypeNotes); noteRel.Target != "" {
-		if noteData, nErr := read(noteRel.Target); nErr == nil {
-			slide.Notes = notesText(noteData)
+		var nsx slideXML
+		if decode(noteRel.Target, &nsx) == nil {
+			slide.Notes = notesTextFromSlide(nsx)
 		}
 	}
 	return slide, nil
@@ -305,6 +313,12 @@ func notesText(data []byte) string {
 	if err := xml.Unmarshal(data, &sx); err != nil {
 		return ""
 	}
+	return notesTextFromSlide(sx)
+}
+
+// notesTextFromSlide extracts speaker-notes text from an already-decoded notes
+// slide, skipping the slide-number placeholder.
+func notesTextFromSlide(sx slideXML) string {
 	var parts []string
 	for _, sh := range sx.Shapes {
 		if sh.NV.NvPr.PH != nil && sh.NV.NvPr.PH.Type == "sldNum" {
