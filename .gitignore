@@ -3,6 +3,8 @@ build/
 dist/
 coverage.out
 coverage.html
+*.test
+*.prof
 .DS_Store
 
 # Local-only real-world eval decks (never committed — may contain licensed/personal content)
