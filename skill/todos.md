@@ -8,7 +8,7 @@
 
 ## Polish
 
-- [ ] Add an `icon.png` (not committed yet — no fabricated placeholder)
+- [x] Add an `icon.png` (PPTX → MD banner logo)
 - [ ] Consider a root-level `.claude-plugin/marketplace.json` (or a release asset)
       so the GitHub-shorthand `/plugin marketplace add greenstevester/pptx2md-go`
       resolves without a path

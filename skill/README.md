@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="icon.png" alt="pptx2md — PowerPoint to Markdown" width="391">
+</p>
+
 # pptx2md — PowerPoint → Markdown skill for Claude Code
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
