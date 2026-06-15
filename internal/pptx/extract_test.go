@@ -1,4 +1,4 @@
-package main
+package pptx
 
 import (
 	"archive/zip"

@@ -1,4 +1,4 @@
-package main
+package pptx
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ func renderFixture(t *testing.T, name string) string {
 	if err != nil {
 		t.Fatalf("extract %s: %v", name, err)
 	}
-	return postprocessText(ToMarkdown(deck))
+	return PostprocessText(ToMarkdown(deck))
 }
 
 // TestGoldenEvals proves end-to-end conversion is stable and correct by diffing

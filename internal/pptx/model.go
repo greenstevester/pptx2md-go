@@ -1,4 +1,4 @@
-package main
+package pptx
 
 // Deck is a semantic representation of a PPTX presentation.
 type Deck struct {

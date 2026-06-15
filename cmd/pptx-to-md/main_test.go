@@ -28,9 +28,9 @@ func TestParseOutputArgsExplicit(t *testing.T) {
 	}
 }
 
-func TestConvertWritesFile(t *testing.T) {
+func TestRunConvertWritesFile(t *testing.T) {
 	out := filepath.Join(t.TempDir(), "out.md")
-	if err := convert("testdata/fixtures/basic.pptx", out, false); err != nil {
+	if err := runConvert("../../internal/pptx/testdata/fixtures/basic.pptx", out, false); err != nil {
 		t.Fatal(err)
 	}
 	data, err := os.ReadFile(out)

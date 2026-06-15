@@ -1,4 +1,4 @@
-package main
+package pptx
 
 import (
 	"archive/zip"
@@ -139,7 +139,7 @@ func BenchmarkConvertSmallFixture(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
-		_ = postprocessText(ToMarkdown(deck))
+		_ = PostprocessText(ToMarkdown(deck))
 	}
 	reportSlidesPerSec(b, slides)
 }
@@ -168,7 +168,7 @@ func BenchmarkRenderLarge(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = postprocessText(ToMarkdown(deck))
+		_ = PostprocessText(ToMarkdown(deck))
 	}
 	reportSlidesPerSec(b, benchSlides)
 }
@@ -184,7 +184,7 @@ func BenchmarkConvertLarge(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
-		_ = postprocessText(ToMarkdown(deck))
+		_ = PostprocessText(ToMarkdown(deck))
 	}
 	reportSlidesPerSec(b, benchSlides)
 }
@@ -213,7 +213,7 @@ func BenchmarkConvertRealWorld(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
-		_ = postprocessText(ToMarkdown(deck))
+		_ = PostprocessText(ToMarkdown(deck))
 	}
 	reportSlidesPerSec(b, slides)
 }

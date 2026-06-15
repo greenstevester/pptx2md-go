@@ -8,7 +8,7 @@ CLI tool that converts PowerPoint presentations (.pptx) to clean, agent-readable
 
 This repo builds the platform-specific binaries (Windows, macOS, Linux × amd64/arm64) consumed by the PowerPoint-to-Markdown skill package. The installer detects OS/arch and selects the correct binary from this repo's releases.
 
-Module name: `pptx-to-agent-md` | Go 1.24+ (CI runs 1.26.1) | Single `main` package.
+Module name: `pptx-to-agent-md` | Go 1.24+ (CI runs 1.26.1). Layout: thin CLI entrypoint in `cmd/pptx-to-md/`, conversion engine in `internal/pptx` (package `pptx`).
 
 ## Build & Test Commands
 
@@ -18,18 +18,20 @@ make build-all                   # Cross-compile all 6 targets -> build/
 make test                        # Run all tests with -race
 make lint                        # golangci-lint
 make ci                          # Full CI pipeline locally
-go test -run TestRenderTable     # Run a single test by name
+go test ./internal/pptx -run TestRenderTable   # Run a single engine test by name
 ```
 
 ## Architecture
 
-Three-stage in-process pipeline, all in package `main`:
+The `internal/pptx` package (`package pptx`) is the engine — a three-stage in-process pipeline:
 
-1. **pptx.go** — opens the zip, resolves slide order from `ppt/presentation.xml` `<p:sldIdLst>` via `ppt/_rels/presentation.xml.rels` (NOT lexical filename order), and extracts title/body/tables/images/notes into a `Deck` model. `relationships.go` resolves `.rels` targets.
+1. **extract.go** — opens the zip, resolves slide order from `ppt/presentation.xml` `<p:sldIdLst>` via `ppt/_rels/presentation.xml.rels` (NOT lexical filename order), and extracts title/body/tables/images/notes into a `Deck` model. `relationships.go` resolves `.rels` targets.
 2. **render.go** — renders the `Deck` to Markdown: `## Slide N: Title`, bullets nested by level, Markdown tables, `[IMAGE: alt]` placeholders, speaker notes as `> **Notes:**`, `---` between slides.
 3. **postprocess.go** — light cleanup (normalize CRLF, trim trailing whitespace, collapse blank lines).
 
-`main.go` dispatches subcommands: default (full convert via `convert.go`), `postprocess` (postprocess-only). Output goes to file by default or stdout with `--stdout`.
+`convert.go` ties them together: `pptx.Convert(path)` returns the cleaned Markdown string (no I/O). Exported engine API: `Extract`/`ExtractFile`, `ToMarkdown`, `PostprocessText`, `Convert`, and the `Deck`/`Slide`/`Block` types.
+
+`cmd/pptx-to-md/main.go` is the thin CLI: it parses args, dispatches subcommands (default convert, `postprocess`), and owns all file/stdout I/O. Output goes to a file by default or stdout with `--stdout`.
 
 ## Key Design Decisions
 

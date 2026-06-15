@@ -8,7 +8,7 @@ before:
 
 builds:
   - id: pptx-to-md
-    main: .
+    main: ./cmd/pptx-to-md
     binary: pptx-to-md
     goos:
       - linux

@@ -1,4 +1,4 @@
-package main
+package pptx
 
 import (
 	"archive/zip"
@@ -46,7 +46,7 @@ func TestRealWorldEvals(t *testing.T) {
 			if err != nil {
 				t.Fatalf("extract: %v", err)
 			}
-			md := postprocessText(ToMarkdown(deck))
+			md := PostprocessText(ToMarkdown(deck))
 
 			if strings.TrimSpace(md) == "" {
 				t.Fatal("empty output")
