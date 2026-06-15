@@ -34,31 +34,37 @@ the binary built by this repo.
 
 ## Install
 
-Because the plugin manifest lives in this `skill/` subdirectory (not the repo
-root), add it by path:
-
-```bash
-# Quick local test
-claude --plugin-dir /path/to/pptx2md-go/skill
-
-# Or register the marketplace and install
-/plugin marketplace add /path/to/pptx2md-go/skill
-/plugin install pptx2md@pptx2md
+```
+/plugin marketplace add greenstevester/pptx2md-go
 ```
 
-Restart Claude Code, then ask: *"What pptx skills do you have?"*
+Restart Claude Code.
 
-The binary itself is fetched on first use by `install.sh` (downloads the
-platform build from this repo's GitHub Releases and verifies its sha256). You can
-also run it directly:
+**Verify:** ask Claude *"What pptx skills do you have?"*
+
+The conversion binary is fetched on first use by `install.sh` (downloads the
+platform build from this repo's GitHub Releases and verifies its sha256). To
+install it yourself:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/greenstevester/pptx2md-go/main/skill/install.sh | bash
 ```
 
 > **Status:** the engine has no published GitHub release yet, so `install.sh`
-> will report that it can't find a release until the first one is tagged. The
-> script itself is complete and correct.
+> reports it can't find a release until the first one is tagged. The script
+> itself is complete and correct.
+
+## Update
+
+```
+/plugin marketplace update pptx2md
+```
+
+## Local development
+
+```bash
+claude --plugin-dir /path/to/pptx2md-go
+```
 
 ## Usage
 

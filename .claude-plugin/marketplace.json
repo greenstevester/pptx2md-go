@@ -11,7 +11,7 @@
     {
       "name": "pptx2md",
       "description": "Convert PowerPoint (.pptx) files to clean, agent-readable Markdown",
-      "source": "./skills/pptx2md",
+      "source": "./skill/skills/pptx2md",
       "version": "0.1.0",
       "homepage": "https://github.com/greenstevester/pptx2md-go/blob/main/skill/skills/pptx2md/SKILL.md",
       "author": {

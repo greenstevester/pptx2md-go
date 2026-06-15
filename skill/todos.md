@@ -2,16 +2,15 @@
 
 ## Blocking (install.sh can't fetch a binary until these are done)
 
-- [ ] Push the engine repo to `github.com/greenstevester/pptx2md-go`
+- [x] Push the engine repo to `github.com/greenstevester/pptx2md-go`
 - [ ] Tag the first release so GoReleaser publishes platform binaries +
       `checksums.txt` (the assets `install.sh` downloads)
 
 ## Polish
 
 - [x] Add an `icon.png` (PPTX → MD banner logo)
-- [ ] Consider a root-level `.claude-plugin/marketplace.json` (or a release asset)
-      so the GitHub-shorthand `/plugin marketplace add greenstevester/pptx2md-go`
-      resolves without a path
+- [x] Root-level `.claude-plugin/marketplace.json` so `/plugin marketplace add
+      greenstevester/pptx2md-go` resolves (source → `skill/skills/pptx2md`)
 - [ ] Smoke-test `install.sh` end-to-end once a release exists (darwin/linux × amd64/arm64)
 - [ ] Windows: verify the manual `.zip` instructions; consider a `.ps1` installer
 

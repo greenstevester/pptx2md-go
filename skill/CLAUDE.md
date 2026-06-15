@@ -8,20 +8,23 @@ subdirectory). For the engine binary, see `../CLAUDE.md`.
 A Claude Code skill plugin that wraps the `pptx-to-md` engine binary. It is a
 thin install + UX wrapper, not a codebase with build/test steps — the conversion
 logic lives in the Go binary built by the parent repo. Structured like
-[`fastlane-skill`](https://github.com/greenstevester/fastlane-skill), nested
-inside the engine repo.
+[`fastlane-skill`](https://github.com/greenstevester/fastlane-skill).
 
 ## Structure
 
+The marketplace manifest lives at the **repo root** (`../.claude-plugin/`) so the
+GitHub shorthand `/plugin marketplace add greenstevester/pptx2md-go` resolves; it
+points its plugin `source` at `./skill/skills/pptx2md`. The skill's own assets
+stay grouped under `skill/`:
+
 ```
-.claude-plugin/
-  marketplace.json   # marketplace "pptx2md"; plugin "pptx2md", source ./skills/pptx2md
+<repo-root>/.claude-plugin/
+  marketplace.json   # plugin "pptx2md", source ./skill/skills/pptx2md
   plugin.json        # plugin metadata
-skills/
-  pptx2md/
-    SKILL.md         # the combined skill (install-if-missing → convert)
-install.sh           # OS/arch detect → download release asset → sha256 verify → install
-todos.md             # roadmap
+skill/
+  skills/pptx2md/SKILL.md   # the combined skill (install-if-missing → convert)
+  install.sh                # OS/arch detect → download release asset → sha256 verify → install
+  README.md  CLAUDE.md  todos.md  icon.png  LICENSE
 ```
 
 ## SKILL.md format
@@ -36,8 +39,8 @@ todos.md             # roadmap
 No build step.
 
 ```bash
-claude --plugin-dir /path/to/pptx2md-go/skill   # load locally
-shellcheck install.sh                                          # lint the installer
+claude --plugin-dir /path/to/pptx2md-go   # load locally (repo root holds the manifest)
+shellcheck skill/install.sh               # lint the installer
 ```
 
 Then run the `pptx2md` skill in a directory containing a `.pptx`.
@@ -47,7 +50,8 @@ Then run the `pptx2md` skill in a directory containing a `.pptx`.
 - Unlike fastlane-skill (Homebrew), this installs a static binary from GitHub
   Releases. `install.sh` asset names must stay in sync with `../.goreleaser.yml`
   (`pptx-to-md_<version>_<os>_<arch>.tar.gz`).
-- The plugin manifest is in this subdirectory, so the GitHub-shorthand
-  `/plugin marketplace add owner/repo` will not auto-resolve it — install by path.
+- The marketplace manifest lives at the repo root so
+  `/plugin marketplace add greenstevester/pptx2md-go` works; its plugin `source`
+  points back into `skill/skills/pptx2md`.
 - Keep the skill's documented behaviour in sync with the engine CLI
-  (`../main.go`): positional `<in.pptx> [out.md] [--stdout]` + `postprocess`.
+  (`../cmd/pptx-to-md/main.go`): positional `<in.pptx> [out.md] [--stdout]` + `postprocess`.
