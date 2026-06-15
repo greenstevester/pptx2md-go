@@ -19,7 +19,7 @@ func ToMarkdown(deck Deck) string {
 		if heading == "" {
 			heading = fmt.Sprintf("Slide %d", s.Number)
 		}
-		b.WriteString(fmt.Sprintf("## Slide %d: %s\n\n", s.Number, heading))
+		fmt.Fprintf(&b, "## Slide %d: %s\n\n", s.Number, heading)
 
 		for _, block := range s.Blocks {
 			switch block.Type {
