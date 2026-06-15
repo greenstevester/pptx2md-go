@@ -52,6 +52,26 @@ func TestRenderImagePlaceholderEmptyAlt(t *testing.T) {
 	}
 }
 
+func TestRenderEmptyTableOmitted(t *testing.T) {
+	deck := Deck{Title: "T", Slides: []Slide{{Number: 1, Title: "S", Blocks: []Block{
+		{Type: "table", Rows: [][]string{{"", ""}, {"", ""}, {"", ""}}},
+	}}}}
+	md := ToMarkdown(deck)
+	if strings.Contains(md, "|") {
+		t.Fatalf("all-empty table should render nothing, got:\n%s", md)
+	}
+}
+
+func TestRenderTableWithSomeContentKept(t *testing.T) {
+	deck := Deck{Title: "T", Slides: []Slide{{Number: 1, Title: "S", Blocks: []Block{
+		{Type: "table", Rows: [][]string{{"Area", "Status"}, {"Parser", ""}}},
+	}}}}
+	md := ToMarkdown(deck)
+	if !strings.Contains(md, "| Area | Status |") || !strings.Contains(md, "| Parser |  |") {
+		t.Fatalf("table with partial content should still render, got:\n%s", md)
+	}
+}
+
 func TestRenderNestedBullets(t *testing.T) {
 	deck := Deck{Title: "T", Slides: []Slide{{Number: 1, Title: "S", Blocks: []Block{
 		{Type: "bullet", Text: "top", Level: 0},

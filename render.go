@@ -49,7 +49,7 @@ func ToMarkdown(deck Deck) string {
 }
 
 func renderTable(rows [][]string) string {
-	if len(rows) == 0 {
+	if len(rows) == 0 || !tableHasContent(rows) {
 		return ""
 	}
 	cols := len(rows[0])
@@ -75,4 +75,17 @@ func renderTable(rows [][]string) string {
 		b.WriteString("\n" + cells(row))
 	}
 	return b.String()
+}
+
+// tableHasContent reports whether any cell has non-whitespace text. An
+// all-empty table is noise (PowerPoint placeholder grids) and is dropped.
+func tableHasContent(rows [][]string) bool {
+	for _, row := range rows {
+		for _, cell := range row {
+			if strings.TrimSpace(cell) != "" {
+				return true
+			}
+		}
+	}
+	return false
 }
