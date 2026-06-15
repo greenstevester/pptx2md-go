@@ -34,10 +34,10 @@ func slideWithTitle(title string) string {
 // Slides must follow presentation order (sldIdLst), not lexical filename order.
 func TestSlideOrderFollowsSldIdLst(t *testing.T) {
 	parts := map[string]string{
-		"ppt/presentation.xml": `<p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><p:sldIdLst><p:sldId r:id="rIdB"/><p:sldId r:id="rIdA"/></p:sldIdLst></p:presentation>`,
+		"ppt/presentation.xml":            `<p:presentation xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><p:sldIdLst><p:sldId r:id="rIdB"/><p:sldId r:id="rIdA"/></p:sldIdLst></p:presentation>`,
 		"ppt/_rels/presentation.xml.rels": `<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rIdA" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide1.xml"/><Relationship Id="rIdB" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/slide2.xml"/></Relationships>`,
-		"ppt/slides/slide1.xml": slideWithTitle("Alpha"),
-		"ppt/slides/slide2.xml": slideWithTitle("Bravo"),
+		"ppt/slides/slide1.xml":           slideWithTitle("Alpha"),
+		"ppt/slides/slide2.xml":           slideWithTitle("Bravo"),
 	}
 	data := buildZip(t, parts)
 	deck, err := Extract(bytes.NewReader(data), int64(len(data)))
