@@ -72,7 +72,11 @@ large/third-party decks are exercised locally but never committed.
   - `BenchmarkConvertRealWorld` — converts local `startup_x` if present, else
     `b.Skip`; reports real-world numbers when available.
 - Run via the existing `make bench` (`go test -bench=. -benchmem`). Report
-  ns/op, B/op, allocs/op, and derived throughput (slides/sec, MB/sec).
+  ns/op, B/op, allocs/op, and **slides/sec**. MB/sec is deliberately not
+  reported: most of a real `.pptx` is media/chart bytes the converter never
+  parses, so bytes/sec against file size overstates throughput. The generated
+  deck uses realistic slides (formatting subtrees, picture, table, notes) so its
+  numbers reflect the `encoding/xml.Skip` cost that dominates real decks.
 
 ## Execution & evidence
 
