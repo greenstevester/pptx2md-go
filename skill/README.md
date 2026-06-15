@@ -35,10 +35,10 @@ root), add it by path:
 
 ```bash
 # Quick local test
-claude --plugin-dir /path/to/powerpoint-to-md-skill-go/skill
+claude --plugin-dir /path/to/pptx2md-go/skill
 
 # Or register the marketplace and install
-/plugin marketplace add /path/to/powerpoint-to-md-skill-go/skill
+/plugin marketplace add /path/to/pptx2md-go/skill
 /plugin install pptx2md@pptx2md
 ```
 
@@ -49,7 +49,7 @@ platform build from this repo's GitHub Releases and verifies its sha256). You ca
 also run it directly:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/greenstevester/powerpoint-to-md-skill-go/main/skill/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/greenstevester/pptx2md-go/main/skill/install.sh | bash
 ```
 
 > **Status:** the engine has no published GitHub release yet, so `install.sh`
@@ -68,4 +68,4 @@ pptx-to-md postprocess deck.md      # re-run the cleanup pass
 
 ## License
 
-MIT — see [LICENSE](LICENSE). Engine: [powerpoint-to-md-skill-go](https://github.com/greenstevester/powerpoint-to-md-skill-go).
+MIT — see [LICENSE](LICENSE). Engine: [pptx2md-go](https://github.com/greenstevester/pptx2md-go).

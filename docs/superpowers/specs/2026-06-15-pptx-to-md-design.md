@@ -1,4 +1,4 @@
-# Design: powerpoint-to-md-skill-go
+# Design: pptx2md-go
 
 **Date:** 2026-06-15
 **Status:** Approved (design phase)

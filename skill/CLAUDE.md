@@ -36,7 +36,7 @@ todos.md             # roadmap
 No build step.
 
 ```bash
-claude --plugin-dir /path/to/powerpoint-to-md-skill-go/skill   # load locally
+claude --plugin-dir /path/to/pptx2md-go/skill   # load locally
 shellcheck install.sh                                          # lint the installer
 ```
 

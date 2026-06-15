@@ -11,7 +11,7 @@
 #
 set -euo pipefail
 
-REPO="greenstevester/powerpoint-to-md-skill-go"
+REPO="greenstevester/pptx2md-go"
 BINARY="pptx-to-md"
 INSTALL_DIR="${PPTX2MD_BIN_DIR:-$HOME/.local/bin}"
 

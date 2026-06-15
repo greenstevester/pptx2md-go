@@ -12,7 +12,7 @@ the actual conversion logic lives in the Go binary built by this repo; the skill
 installs the right binary for the user's platform and documents how to use it.
 
 Decisions (from brainstorming):
-- **Location:** in-repo at `powerpoint-to-md-skill-go/skill/` (not a separate repo).
+- **Location:** in-repo at `pptx2md-go/skill/` (not a separate repo).
 - **One combined skill** named `pptx2md` (install-if-missing → convert).
 - **Names:** marketplace `pptx2md`, plugin `pptx2md`, skill `pptx2md`; binary stays `pptx-to-md`.
 - **Install:** download the release binary by OS/arch + sha256 verify (no Homebrew —

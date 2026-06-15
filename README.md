@@ -1,4 +1,4 @@
-# powerpoint-to-md-skill-go
+# pptx2md-go
 
 A pure-Go CLI that converts PowerPoint (`.pptx`) files into clean, agent-readable Markdown.
 

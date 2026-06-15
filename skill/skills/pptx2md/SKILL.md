@@ -33,14 +33,14 @@ If the pre-flight shows the binary is missing, install the right build for your
 platform (downloads from GitHub Releases and verifies its sha256 checksum):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/greenstevester/powerpoint-to-md-skill-go/main/skill/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/greenstevester/pptx2md-go/main/skill/install.sh | bash
 ```
 
 Installs to `~/.local/bin` by default (override with `PPTX2MD_BIN_DIR`). If that
 directory is not on your `PATH`, add it: `export PATH="$HOME/.local/bin:$PATH"`.
 
 > **Windows:** download the `_windows_amd64.zip` from the
-> [releases page](https://github.com/greenstevester/powerpoint-to-md-skill-go/releases/latest)
+> [releases page](https://github.com/greenstevester/pptx2md-go/releases/latest)
 > and put `pptx-to-md.exe` on your `PATH`.
 
 ---
