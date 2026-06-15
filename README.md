@@ -1,4 +1,14 @@
+<p align="center">
+  <img src="skill/icon.png" alt="pptx2md — PowerPoint to Markdown" width="391">
+</p>
+
 # pptx2md-go
+
+[![CI](https://github.com/greenstevester/pptx2md-go/actions/workflows/ci.yml/badge.svg)](https://github.com/greenstevester/pptx2md-go/actions/workflows/ci.yml)
+[![Release](https://github.com/greenstevester/pptx2md-go/actions/workflows/release.yml/badge.svg)](https://github.com/greenstevester/pptx2md-go/actions/workflows/release.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Pure Go](https://img.shields.io/badge/Pure%20Go-no%20deps-00ADD8?logo=go&logoColor=white)](https://go.dev/)
+[![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-purple.svg)](skill/)
 
 A pure-Go CLI that converts PowerPoint (`.pptx`) files into clean, agent-readable Markdown.
 
